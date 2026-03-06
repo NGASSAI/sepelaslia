@@ -1,0 +1,35 @@
+# Sécurity - Sepelas&Lia
+# Empêche le listage des dossiers
+Options -Indexes
+
+# Protège les fichiers sensibles
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Empêche l'accès aux fichiers de configuration
+<FilesMatch "\.(env|sql|md|git|htaccess)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Active le mode rewrite
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+</IfModule>
+
+# Protection contre les injections SQL simples
+<IfModule mod_php7.c>
+    php_flag display_errors Off
+    php_flag log_errors On
+</IfModule>
+
+# En-têtes de sécurité
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
